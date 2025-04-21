@@ -77,12 +77,12 @@ Resources:
       StageName: api
       EndpointConfiguration:
         Type: REGIONAL
-      # Auth:
-      #   DefaultAuthorizer: CognitoAuthorizer
-      #   Authorizers:
-      #     CognitoAuthorizer:
-      #       UserPoolArn: !Ref UserPoolArn
-      #   AddDefaultAuthorizerToCorsPreflight: False
+      Auth:
+        DefaultAuthorizer: CognitoAuthorizer
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn: !Ref UserPool
+        AddDefaultAuthorizerToCorsPreflight: False
       GatewayResponses:
         DEFAULT_5XX:
           ResponseParameters:
@@ -151,6 +151,44 @@ Resources:
             Effect: Allow
             Resource: !Sub "arn:aws:s3:::${ItemImageBucket}/*"
             Principal: "*"
+  # Cognito User Pool
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Sub "${AWS::StackName}-next-serverless-userpool"
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+          - Name: verified_email
+            Priority: 1
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: false
+      AutoVerifiedAttributes: 
+        - email
+      EmailConfiguration:
+        EmailSendingAccount: COGNITO_DEFAULT
+      AliasAttributes:
+        - email
+      DeletionProtection: INACTIVE
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: true
+          RequireUppercase: true
+  # Cognito User Pool Application Client
+  UserPoolAppClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: !Sub "${AWS::StackName}-next-serverless-appclient"
+      GenerateSecret: false
+      RefreshTokenValidity: 30
+      ExplicitAuthFlows:
+        - ALLOW_USER_AUTH 
+        - ALLOW_USER_SRP_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+      UserPoolId:
+        Ref: UserPool
 Outputs:
 # ItemImageBucket
   ItemImageBucket:
