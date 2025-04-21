@@ -81,7 +81,7 @@ Resources:
         DefaultAuthorizer: CognitoAuthorizer
         Authorizers:
           CognitoAuthorizer:
-            UserPoolArn: !Ref UserPool
+            UserPoolArn: !GetAtt UserPool.Arn
         AddDefaultAuthorizerToCorsPreflight: False
       GatewayResponses:
         DEFAULT_5XX:
@@ -190,9 +190,16 @@ Resources:
       UserPoolId:
         Ref: UserPool
 Outputs:
-# ItemImageBucket
+  # ItemImageBucket
   ItemImageBucket:
     Value: !Ref BUCKETNAME
   ItemImageURL:
     Value: !Sub https://${BUCKETNAME}.s3.${AWS::Region}.amazonaws.com
+  # Cognito User Pool Id
+  UserPoolId:
+    Value: !Ref UserPool
+  # Cognito User Pool Application Client
+  UserPoolAppClient:
+    Value: !Ref UserPoolAppClient
+
 
