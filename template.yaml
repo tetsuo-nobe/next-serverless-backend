@@ -41,6 +41,8 @@ Resources:
             RestApiId: !Ref NextServerlessBackendAPI
             Path: /item/getall
             Method: get
+            Auth:
+              Authorizer: NONE
   # 商品検索関数
   SearchFunction:
     Type: AWS::Serverless::Function 
@@ -61,7 +63,7 @@ Resources:
       Environment: 
         Variables:
           TABLE_NAME: !Ref ItemTable
-          INDEX_NAME: !Sub "${AWS::StackName}-catrgory-itemName-index"
+          CATEGORY_INDEX_NAME: !Sub "${AWS::StackName}-catrgory-itemName-index"
       Events:
         search:
           Type: Api 
