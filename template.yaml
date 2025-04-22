@@ -156,18 +156,26 @@ Resources:
     Type: AWS::Cognito::UserPool
     Properties:
       UserPoolName: !Sub "${AWS::StackName}-next-serverless-userpool"
+      UsernameAttributes:
+        - email
+      AutoVerifiedAttributes:
+        - email
+      Schema:
+        - Name: email
+          AttributeDataType: String
+          DeveloperOnlyAttribute: false
+          Mutable: true
+          Required: true
       AccountRecoverySetting:
         RecoveryMechanisms:
           - Name: verified_email
             Priority: 1
       AdminCreateUserConfig:
         AllowAdminCreateUserOnly: false
-      AutoVerifiedAttributes: 
-        - email
       EmailConfiguration:
         EmailSendingAccount: COGNITO_DEFAULT
-      AliasAttributes:
-        - email
+      # AliasAttributes:
+      #   - email
       DeletionProtection: INACTIVE
       Policies:
         PasswordPolicy:
@@ -194,7 +202,10 @@ Outputs:
   ItemImageBucket:
     Value: !Ref BUCKETNAME
   ItemImageURL:
-    Value: !Sub https://${BUCKETNAME}.s3.${AWS::Region}.amazonaws.com
+    Value: !Sub "https://${BUCKETNAME}.s3.${AWS::Region}.amazonaws.com"
+  # API
+  NextServerlessBackendAPI:
+    Value: !Sub "https://${NextServerlessBackendAPI}.execute-api.${AWS::Region}.amazonaws.com"
   # Cognito User Pool Id
   UserPoolId:
     Value: !Ref UserPool
