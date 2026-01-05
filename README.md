@@ -6,6 +6,6 @@
 * Cognito ユーザープールで認証
     - フロントエンドは Amplify UI Livrary でサインインページを構成 
 * API Gateway の API は、Cognito オーソライザーで認可
-* 
+---
   <img width="940" height="422" alt="next-serverless-backend" src="https://github.com/user-attachments/assets/2a1ec66d-87b2-4c62-9557-5d2327640573" />
 
