@@ -1,6 +1,7 @@
 # 商品情報の検索アプリケーションのバックエンド
 
-* フロントエンドは Next.js を想定しており、API Gateway の API で連携する。
+* フロントエンドは Next.js を想定しており、API Gateway の API で連携する
+* 商品画像は S3 バケットに保存
 * Lambda 関数と DynamoDB テーブル、グローバルセカンダリインデックスを使用
 * Cognito ユーザープールで認証
     - フロントエンドは Amplify UI Livrary でサインインページを構成 
